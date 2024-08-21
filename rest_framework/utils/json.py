@@ -7,7 +7,7 @@ handled by users at the renderer and parser layer.
 """
 import functools
 import json  # noqa
-
+import ujson
 
 def strict_constant(o):
     raise ValueError('Out of range float values are not JSON compliant: ' + repr(o))
@@ -19,10 +19,10 @@ def dump(*args, **kwargs):
     return json.dump(*args, **kwargs)
 
 
-@functools.wraps(json.dumps)
+@functools.wraps(ujson.dumps)
 def dumps(*args, **kwargs):
     kwargs.setdefault('allow_nan', False)
-    return json.dumps(*args, **kwargs)
+    return ujson.dumps(*args, **kwargs)
 
 
 @functools.wraps(json.load)
@@ -31,7 +31,7 @@ def load(*args, **kwargs):
     return json.load(*args, **kwargs)
 
 
-@functools.wraps(json.loads)
+@functools.wraps(ujson.loads)
 def loads(*args, **kwargs):
     kwargs.setdefault('parse_constant', strict_constant)
-    return json.loads(*args, **kwargs)
+    return ujson.loads(*args, **kwargs)
